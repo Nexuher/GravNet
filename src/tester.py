@@ -18,11 +18,11 @@ if __name__ == "__main__":
     time.sleep(1)
 
     # Spawn client and server instances
-    for x in range(5):
+    for x in range(constants.TESTING_CLIENTS_COUNT):
         cmd_with_name = cmd_run_client + constants.get_random_name()
         client_instances.append(Popen(cmd_with_name, creationflags=CREATE_NEW_CONSOLE))
 
-    input("Press a key to kill all spawned instances of server and clients")
+    input("Press a key to kill all spawned instances of server and clients\n")
 
     # Kill all instances
     serv_instance.kill()

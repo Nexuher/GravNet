@@ -4,6 +4,7 @@ import threading
 import random
 import time
 
+import msg_formats
 import constants
 
 class Client:
@@ -25,7 +26,7 @@ class Client:
         # Connect to the server
         try:
             self.chat_socket.connect((constants.HOST,constants.PORT))
-            print(f"connected to server")
+            print(f"Connected to server")
         except:
             print(f"Unable to connect {constants.HOST}:{constants.PORT} EXITING")
             exit(0)
@@ -38,39 +39,31 @@ class Client:
 
         # Send welcome message to the server
         self.send_message(self.username)
-        print(self.username)
-
 
         print("Connected to the server.")
 
 
     def start_listening_to_incoming_messages(self):
-        print("start_listening_to_incoming_messages")
         while True:
-            message = self.chat_socket.recv(2048).decode('utf-8')
+            decoded_message = self.chat_socket.recv(2048).decode('utf-8')
 
-            if message != '':
-                decoded_nickname = message.split("~")[0]
-                decoded_message = message.split("~")[1]
+            if decoded_message != '':
+                message_timestamp, username, message = msg_formats.split_standard_message(decoded_message)
 
-                if decoded_nickname == self.username:
+                if username == self.username:
                     continue
 
-                print(f"[{decoded_nickname}] {decoded_message}")
+                print(f"[{message_timestamp}] <{username}>: \n{message}")
 
 
     def start_waiting_for_user_input(self):
-        print("start_waiting_for_user_input")
-        while True:
-            # message = input()
-            # if message != "":
-            #     self.send_message(message)
-
-            wait_time = random.randint(1, 4)
-            time.sleep(wait_time)
-
-            self.send_message("AHAHAHAHHAA" * random.randint(1, 3))
-
+        if constants.ENABLE_SPAM_TESTING:
+            self.run_spam_testing()
+        else:
+            while True:
+                message = input()
+                if message != "":
+                    self.send_message(message)
 
     def send_message(self, message):
         if message == '':
@@ -79,6 +72,13 @@ class Client:
 
         self.chat_socket.sendall(message.encode())
 
+    def run_spam_testing(self):
+        while True:
+            message = "AHAHAHAHHAA" * random.randint(1, 3)
+            wait_time = random.randint(1, 4)
+            time.sleep(wait_time)
+            #print(">>" + message)
+            self.send_message(message)
 
 if __name__ == "__main__":
     client_name = sys.argv[1]

@@ -1,16 +1,17 @@
 import random
 
+# Server settings
 HOST = '127.0.0.1'
 PORT = 1234
 CLIENT_LIMIT = 50
+GUID_LENGTH = 4
 
-USER_CONNECTED_MSG = "[Server Announcement]~ {0} connected to the chat"
-USER_DISCONNECTED_MSG = "[Server Announcement]~ {0} left the chat"
-
+# Testing settings
+ENABLE_SPAM_TESTING = True
+TESTING_CLIENTS_COUNT = 3
 
 def get_random_name():
     return EXAMPLE_NAMES[random.randint(0, len(EXAMPLE_NAMES) - 1)]
-
 
 EXAMPLE_NAMES = [
     "Emma",

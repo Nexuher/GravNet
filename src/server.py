@@ -1,9 +1,10 @@
-import sys
 import socket
 import threading
-import datetime
+import random
 
+import time_info
 import constants
+import msg_formats
 
 class Server:
 
@@ -55,24 +56,24 @@ class Server:
 
         # Setup new client
         self.connected_clients[client_username] = client_object
-        user_joined_announcement_msg = constants.USER_CONNECTED_MSG.format(client_username)
+        user_joined_announcement_msg = msg_formats.get_server_announcement_message(time_info.return_current_time(), f"{client_username} joined the chat")
         print(user_joined_announcement_msg)
         self.send_server_announcement(user_joined_announcement_msg)
 
         # Keep listening for messages incoming from this client
         while True:
-
             try:
                 message = self.try_get_message(client_object)
             except:
                 del self.connected_clients[client_username]
-                user_left_announcement_msg = constants.USER_DISCONNECTED_MSG.format(client_username)
+                user_left_announcement_msg = msg_formats.get_server_announcement_message(time_info.return_current_time(), f"{client_username} left the chat")
                 print(user_left_announcement_msg)
                 self.send_server_announcement(user_left_announcement_msg)
                 break
             
-            print(message)
-            self.send_server_announcement(client_username + "~" + message)
+            formatted_message = msg_formats.get_standard_message(time_info.return_current_time(), client_username, message)
+            print(formatted_message)
+            self.send_server_announcement(formatted_message)
 
 
     def try_get_message(self, client_object):
@@ -92,7 +93,12 @@ class Server:
     def send_server_announcement(self, announcement_message):
         for client_object in self.connected_clients.values():
             self.send_message(client_object, announcement_message)
-            
+    
+    def generate_hashtag():
+        hashtag = ""
+        for number in range(constants.GUID_LENGTH):
+            hashtag += random.randint(0,9)
+                        
 
 if __name__ == "__main__":
     print("SERVER SERVER SERVER SERVER SERVER SERVER SERVER SERVER")
