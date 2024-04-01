@@ -50,7 +50,7 @@ class Server:
 
     def handle_connected_client(self, client_object):
         # First incoming message is client username
-        client_username = self.try_get_message(client_object)
+        client_username = self.try_get_message(client_object) + self.generate_hashtag()
 
         print(client_username)
 
@@ -94,10 +94,12 @@ class Server:
         for client_object in self.connected_clients.values():
             self.send_message(client_object, announcement_message)
     
-    def generate_hashtag():
-        hashtag = ""
+    def generate_hashtag(self):
+        hashtag = "#"
         for number in range(constants.GUID_LENGTH):
-            hashtag += random.randint(0,9)
+            hashtag += str(random.randint(0,9))
+        
+        return hashtag
                         
 
 if __name__ == "__main__":
