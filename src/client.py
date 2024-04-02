@@ -65,6 +65,7 @@ class Client:
                 if message != "":
                     self.send_message(message)
 
+
     def send_message(self, message):
         if message == '':
             print("Message can't be empty!")
@@ -72,13 +73,15 @@ class Client:
 
         self.chat_socket.sendall(message.encode())
 
+
     def run_spam_testing(self):
         while True:
-            message = "AHAHAHAHHAA" * random.randint(1, 3)
+            message = "AHAHAH" * random.randint(1, 3)
             wait_time = random.randint(1, 4)
             time.sleep(wait_time)
             #print(">>" + message)
             self.send_message(message)
+
 
 if __name__ == "__main__":
     client_name = sys.argv[1]

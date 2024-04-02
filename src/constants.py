@@ -7,11 +7,16 @@ CLIENT_LIMIT = 50
 GUID_LENGTH = 4
 
 # Testing settings
-ENABLE_SPAM_TESTING = True
+ENABLE_SPAM_TESTING = False
 TESTING_CLIENTS_COUNT = 3
+
+# Message Settings
+PRIVATE_MESSAGE_PREFIX_SIGN = ">"
+
 
 def get_random_name():
     return EXAMPLE_NAMES[random.randint(0, len(EXAMPLE_NAMES) - 1)]
+
 
 EXAMPLE_NAMES = [
     "Emma",
